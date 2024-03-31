@@ -28,7 +28,6 @@ def perform_ssl_scan(target_url):
         'host': target_url,
         'all': 'done'
     }
-
     try:
         response = requests.get(API_URL, params=params)
         
@@ -105,8 +104,10 @@ def perform_ssl_scan(target_url):
                         'Poodle TLS Test': poodle_test_results,
                     }
         else:
+            print("Error: Failed to get SSL scan results. Status code: %s", response.status_code)
             logging.error("Error: Failed to get SSL scan results. Status code: %s", response.status_code)
     except Exception as e:
+        print("An error occurred: %s", e)
         logging.error("An error occurred: %s", e)
 
 if __name__ == "__main__":
@@ -116,4 +117,4 @@ if __name__ == "__main__":
         for key, value in ssl_scan_results.items():
             print(f"{key}: {value}")
     else:
-        print("SSL scan failed.")
+        print("SSL scan failed. Verify that the API is accessible, the target URL is correct, and that the max number of attempts has not been exceeded.")
